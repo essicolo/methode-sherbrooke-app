@@ -171,7 +171,7 @@ sr_opt = WLR_to_VWC(srmodel.predict(
 bulk_density = ρd_f(θ_R2, ρw, gs, sr_opt)
 
 st.write(
-    "La densité apparente du sol est de **{}** kg/m³.".format(int(bulk_density))
+    "La masse volumique sèche du sol ($ρ_d$) est de **{}** kg/m³.".format(int(bulk_density))
 )
 
 psd_plot = alt.Chart(psd_df).mark_line(color='#ff4b4b').encode(
@@ -249,5 +249,5 @@ if psd_csv is not None:
 st.altair_chart(psd_plot | ae_plot, use_container_width=True)
 
 # Notes
-st.write("*Version pre-alpha*. Pour des raisons de confidentialité et de convivialité de la méthode Sherbrooke, les réseaux de neurones utilisés sont correctes, mais volontairement sous-optimisés.")
+st.write("*Version pre-alpha*. Pour des raisons de confidentialité de la méthode Sherbrooke, les réseaux de neurones utilisés sont correctes, mais volontairement sous-optimisés.")
 st.write("Essi Parent, ing., Ph.D.")
