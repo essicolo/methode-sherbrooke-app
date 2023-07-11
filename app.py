@@ -37,6 +37,14 @@ def ρd_f(θ, ρw, Gs, Sr):
     ρd = (1-porosity)*ρs
     return(ρd)
 
+def w_f(θ, ρw, ρd):
+    """
+    Calcul de la teneur en eau gravimétrique
+    """
+    w = θ * ρw / ρd
+    return(w)
+
+
 ## PSD functions
 ### would be easier to render the rosin-rammler equation from d85 and cu than use converters
 def g1_f(cu, d85):
@@ -128,7 +136,6 @@ with st.sidebar:
     else:
         cu = st.slider("Coefficient d'uniformité", min_value=1, max_value=100, value=30)
         d85 = 10**st.slider("log10(D85)", min_value=-3.0, max_value=3.0, value=0.0, step=0.01)
-    
     gs = st.slider("Densité spécifique des grains (g/cm³)", min_value=2.5, max_value=2.9, value=2.7)
     ρw = st.slider("ρw (g/cm³)", min_value=900, max_value=1100, value=1000)
     st.header("Sonde")
@@ -168,10 +175,15 @@ sr_opt = WLR_to_VWC(srmodel.predict(
     verbose=0
 )  * Ysd_sr + Ym_sr)
 
-bulk_density = ρd_f(θ_R2, ρw, gs, sr_opt)
+dry_density = ρd_f(θ_R2, ρw, gs, sr_opt)
+grav_wc = w_f(θ_R1, ρw, dry_density)
 
 st.write(
-    "La masse volumique sèche du sol ($ρ_d$) est de **{}** kg/m³.".format(int(bulk_density))
+    "Masse volumique sèche du sol ($ρ_d$): **{}** kg/m³.".format(int(dry_density))
+)
+
+st.write(
+    "Teneur en eau gravimétrique du sol ($w$): **{}** %.".format(np.round(grav_wc.item() * 100, 1))
 )
 
 psd_plot = alt.Chart(psd_df).mark_line(color='#ff4b4b').encode(
