@@ -6,6 +6,7 @@ import altair as alt
 from scipy.optimize import curve_fit
 
 # Title
+st.write("**CONFIDENTIEL**. Pour utilisation par le Ministère des Transports et de la Mobilité durable et par l'Universoté de Sherbrooke seulement.")
 st.title("Méthode Sherbrooke")
 
 # Functions
