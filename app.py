@@ -1,3 +1,4 @@
+import datetime
 import streamlit as st
 import numpy as np
 import pandas as pd
@@ -6,7 +7,7 @@ import altair as alt
 from scipy.optimize import curve_fit
 
 # Title
-st.write("**CONFIDENTIEL**. Pour utilisation par le Ministère des Transports et de la Mobilité durable et par l'Universoté de Sherbrooke seulement.")
+st.write("**CONFIDENTIEL**. Pour utilisation par le Ministère des Transports et de la Mobilité durable du Québec et par l'Universoté de Sherbrooke seulement. L'application sera désactivée le 1ier septembre 2023.")
 st.title("Méthode Sherbrooke")
 
 # Functions
@@ -179,13 +180,18 @@ sr_opt = WLR_to_VWC(srmodel.predict(
 dry_density = ρd_f(θ_R2, ρw, gs, sr_opt)
 grav_wc = w_f(θ_R1, ρw, dry_density)
 
-st.write(
-    "Masse volumique sèche du sol ($ρ_d$): **{}** kg/m³.".format(int(dry_density))
-)
-
-st.write(
-    "Teneur en eau gravimétrique du sol ($w$): **{}** %.".format(np.round(grav_wc.item() * 100, 1))
-)
+# limite de temps
+now = datetime.datetime.now()
+limit = datetime.datetime(2023, 9, 1)
+if now < limit:
+    st.write(
+        "Masse volumique sèche du sol ($ρ_d$): **{}** kg/m³.".format(int(dry_density))
+    )
+    st.write(
+        "Teneur en eau gravimétrique du sol ($w$): **{}** %.".format(np.round(grav_wc.item() * 100, 1))
+    )
+else:
+    st.write("Le logiciel ne retourne plus la masse volumique sèche et la teneur en eau gravimétrique plus à partir du 2023-09-01.")
 
 psd_plot = alt.Chart(psd_df).mark_line(color='#ff4b4b').encode(
     x=alt.X('x', scale=alt.Scale(type='log'), title='Diamètre (mm)'), y=alt.Y('y', title="Proportion passante")
