@@ -182,7 +182,7 @@ grav_wc = w_f(θ_R1, ρw, dry_density)
 
 # limite de temps
 now = datetime.datetime.now()
-limit = datetime.datetime(2023, 9, 1)
+limit = datetime.datetime(2023, 11, 1)
 if now < limit:
     st.write(
         "Masse volumique sèche du sol ($ρ_d$): **{}** kg/m³.".format(int(dry_density))
